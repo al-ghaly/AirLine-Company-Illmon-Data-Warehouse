@@ -1,0 +1,145 @@
+# LOYALTY PROGRAM
+Airline companies partner with other companies, so customers who book an hotel room may earn flying miles.
+Points Earned | Miles Reademed 
+
+Frequent Flyer System Analysis
+A frequent flyer program (FFP) is designed to reward airline customers with points (often called miles) which can be redeemed for air travel or other rewards. Key elements to understand and model in an FFP include:
+
+Mileage Earning: Rules about how miles are earned, which could be based on the distance flown, fare class, or spend.
+Mileage Redemption: How miles can be redeemed, for what types of rewards (flights, upgrades, other services), and any associated restrictions or expirations.
+Status Levels: Different levels within the program (e.g., gold, platinum, titanium) that might offer additional benefits or accelerated earning rates based on customer loyalty and spending.
+Customer Behavior: Patterns in how different segments use and value their miles and status benefits.
+
+Tiered Membership Levels: Most FFPs have several membership tiers, each offering progressively better benefits. These tiers are usually based on the number of miles flown or points earned within a year.
+----------------------------------
+# MODEL
+
+
+
+Flight Operations Fact Table
+Measures: Number of flights, Available seat miles (ASMs), Revenue passenger miles (RPMs), Fuel consumption, Revenue.
+Keys: Flight ID, Date ID, Route ID, Aircraft Type ID, Fare ID.
+
+Booking Transactions Fact Table
+Measures: Number of bookings, Total revenue, Average fare.
+Keys: Booking ID, Date ID, Customer ID, Flight ID, Fare ID.
+
+Frequent Flyer Mileage Fact Table
+Measures: Miles earned, Miles redeemed.
+Keys: Transaction ID, Date ID, Customer ID, Promotion ID.
+
+
+
+
+Dimension Tables
+Dimension tables store attributes about the measurements in the fact tables, providing additional details and context. Here are common dimensions used in an airline data warehouse:
+
+Date Dimension (Date ID)
+Attributes: Year, Quarter, Month, Week, Day, Day of Week.
+Customer Dimension (Customer ID)
+Attributes: Name, Frequent Flyer Status, Age, Gender, Country, Tier.
+Flight Dimension (Flight ID)
+Attributes: Flight Number, Origin Airport, Destination Airport, Scheduled Departure Time, Scheduled Arrival Time.
+Route Dimension (Route ID)
+Attributes: Route Code, Origin, Destination, Distance.
+Aircraft Type Dimension (Aircraft Type ID)
+Attributes: Aircraft Type, Manufacturer, Model, Capacity.
+Fare Dimension (Fare ID)
+Attributes: Fare Code, Description, Conditions.
+Promotion Dimension (Promotion ID)
+Attributes: Promotion Type, Start Date, End Date, Discount Rate.
+Maintenance Station Dimension (Station ID)
+Attributes: Station Name, Location, Capabilities.
+
+
+
+You've raised an important point about data architecture and management in data warehousing—how to effectively structure and correlate data from similar datasets without redundancy or double-counting. Let's clarify the scenario and the best practices for handling such data.
+
+Ideal Data Warehouse Structure
+In a typical airline data warehouse setup, especially concerning bookings and frequent flyer data, you would ideally maintain a single, unified Booking Transactions Fact Table rather than separate tables for general customers and frequent flyers. This approach streamlines queries and avoids redundancy. Here’s why and how:
+
+
+
+Fact Table: Frequent_Flyer_Flight_Activity
+Measures:
+
+Number_of_Flights: Count of flights taken.
+Miles_Earned: Total miles earned from the flights.
+Miles_Redeemed: Total miles redeemed.
+Amount_Paid: Total amount paid for the flights.
+Foreign Keys (Dimensions):
+
+Flight_ID: Links to the Flight dimension, detailing each specific flight.
+Customer_ID: Links to the Customer dimension, containing frequent flyer profiles including status.
+Fare_ID: Links to the Fare dimension, detailing fare types and basis.
+Promotion_ID: Links to the Promotion dimension, identifying if and what promotion was applied.
+Date_ID: Links to the Date dimension for flight dates and potentially booking dates.
+Upgrade_ID: Links to an Upgrade dimension that details whether and what type of upgrade was taken (class upgrade, seat choice, etc.).
+Dimension Tables
+Here’s a breakdown of the dimension tables that would link to this fact table:
+
+Dimension: Flight
+Flight_ID (Primary Key)
+Route
+Aircraft_Type
+Departure_Airport
+Arrival_Airport
+Scheduled_Departure_Time
+Scheduled_Arrival_Time
+Dimension: Customer
+Customer_ID (Primary Key)
+Name
+Frequent_Flyer_Status (e.g., Gold, Platinum, Titanium)
+Frequent_Flyer_Number
+Tier_Point_Balance
+Dimension: Fare
+Fare_ID (Primary Key)
+Fare_Class (e.g., Economy, Business, First)
+Fare_Basis
+Fare_Restrictions
+Dimension: Promotion
+Promotion_ID (Primary Key)
+Promotion_Description
+Promotion_Start_Date
+Promotion_End_Date
+Discount_Rate
+Dimension: Date
+Date_ID (Primary Key)
+Day
+Month
+Year
+Weekday
+Dimension: Upgrade
+Upgrade_ID (Primary Key)
+Upgrade_Type (e.g., Seat Upgrade, Extra Baggage, Lounge Access)
+Cost_of_Upgrade
+---------------------------------------------------------------
+There are 2 concepts (Segment and Leg) for transit!
+We will focus on Segment and do the work in ETL Jobs
+Operationl Databases have to work on leg grain!
+
+### We will construct 2 Materialized views (Frequent Flyers) and non freqient Flyers, and we will create a non-materialized view on top of only the frequent flyers table to serve the Marketing Team.
+
+## We will create a mini-dimension for the passenger dimension changing attributes
+
+## Page 357 of the book and page 666
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
