@@ -162,7 +162,7 @@ CREATE TABLE ChannelDim
   Type VARCHAR2(250) ,
   Category VARCHAR2(250) ,
   ContactMethod VARCHAR2(250) ,
-  Accessibility VARCHAR2(1) ,
+  Accessibility VARCHAR2(50) ,
   PRIMARY KEY (ChannelKey)
 );
 
