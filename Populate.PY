@@ -290,8 +290,8 @@ def populate_flight_reservations():
 
 def populate_frequent_flyers():
     for i in range(150000):
-        redeemed = random.gauss(100, 500)
-        earned = random.gauss(100, 500)
+        redeemed = abs(random.gauss(100, 500))
+        earned = abs(random.gauss(100, 500))
         cancelled = random.randint(0, 1)
         over_ns = abs(random.gauss(8, 12))
         res = i
@@ -317,10 +317,10 @@ def populate_frequent_flyers():
 
 def populate_customer_care():
     for i in range(15000):
-        res_del = random.gauss(10, 30)
+        res_del = abs(random.gauss(10, 30))
         if random.randint(1, 100) == 15:
             res_del += 100 * random.randint(1, 15)
-        resol_del = random.gauss(10, 30)
+        resol_del = abs(random.gauss(10, 30))
         if random.randint(1, 100) == 15:
             resol_del += 100 * random.randint(1, 15)
         duration = random.gauss(1, 15)
